@@ -20,41 +20,35 @@ import webapp2
 import json
 import requests
 import requests_toolbelt.adapters.appengine
+from security import KEY
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
 # URLFetch.
 requests_toolbelt.adapters.appengine.monkeypatch()
 
-API_KEY = "AIzaSyDJYEdEXmQhAn9n_oR8D4v_0mXz_7atfH8"
+API_KEY = KEY
 
-SYNTAX_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeSyntax"
-SYNTAX_ENDPOINT += ("?key=" + API_KEY)
+SYNTAX_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeSyntax" + ("?key=" + API_KEY)
+ENTITIES_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeEntities" + ("?key=" + API_KEY)
 
-ENTITIES_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeEntities"
-ENTITIES_ENDPOINT += ("?key=" + API_KEY)
-
-data = {"document":
-            {"type":"PLAIN_TEXT",
-             "content":
+TEST_DATA = {"document":
+                {"type":"PLAIN_TEXT",
+                "content":
                     "Google, headquartered in Mountain View, unveiled the new Android phone at the Consumer Electronic Show.  Sundar Pichai said in his keynote that users love their new Android phones."
                  }
         }
 
-# sending post request and saving response as response object
+syntax_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
+syntax_json = syntax_request.json()
 
-syntax_request = requests.post(url = SYNTAX_ENDPOINT, json=data)
-
-syntax_json_data = syntax_request.json()
-
-entities_request = requests.post(url = ENTITIES_ENDPOINT, json=data)
-
-test = syntax_request.text
+entities_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
+entities_json = syntax_request.json()
 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        print(self.response.write(test))
+        print(self.response.write(TEST_DATA['document']['content']))
 
 
 
