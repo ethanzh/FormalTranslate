@@ -16,8 +16,9 @@ ENTITIES_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeEn
 TEST_DATA = {"document":
                 {"type":"PLAIN_TEXT",
                 "content":
-                    "Google, headquartered in Mountain View, unveiled the new Android phone at the Consumer Electronic Show. \
-                     Sundar Pichai said in his keynote that users love their new Android phones."
+                    "Google, headquartered in Mountain View, unveiled the new Android \
+                    phone at the Consumer Electronic Show. Sundar Pichai said in his  \
+                    keynote that users love their new Android phones."
                  }
         }
 
