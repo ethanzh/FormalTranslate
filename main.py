@@ -21,6 +21,7 @@ import json
 import requests
 import requests_toolbelt.adapters.appengine
 from security import KEY
+from apiclient.discovery import build
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
 # URLFetch.
@@ -28,30 +29,18 @@ requests_toolbelt.adapters.appengine.monkeypatch()
 
 API_KEY = KEY
 
-SYNTAX_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeSyntax" + ("?key=" + API_KEY)
-ENTITIES_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeEntities" + ("?key=" + API_KEY)
 
-TEST_DATA = {"document":
-                {"type":"PLAIN_TEXT",
-                "content":
-                    "Google, headquartered in Mountain View, unveiled the new Android phone at the Consumer Electronic Show.  Sundar Pichai said in his keynote that users love their new Android phones."
-                 }
-        }
-
-syntax_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
-syntax_json = syntax_request.json()
-
-entities_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
-entities_json = syntax_request.json()
 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        print(self.response.write(TEST_DATA['document']['content']))
+        print('default')
 
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
 ], debug=True)
+
+
