@@ -17,19 +17,8 @@
 
 
 import webapp2
-import json
-import requests
-import requests_toolbelt.adapters.appengine
-from security import KEY
-from apiclient.discovery import build
-
-# Use the App Engine Requests adapter. This makes sure that Requests uses
-# URLFetch.
-requests_toolbelt.adapters.appengine.monkeypatch()
-
-API_KEY = KEY
-
-
+import numpy
+import sklearn
 
 
 class MainHandler(webapp2.RequestHandler):
