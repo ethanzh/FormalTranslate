@@ -10,8 +10,20 @@ requests_toolbelt.adapters.appengine.monkeypatch()
 API_KEY = KEY
 
 
-SYNTAX_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeSyntax" + ("?key=" + API_KEY)
-ENTITIES_ENDPOINT = "https://language.googleapis.com/v1beta2/documents:analyzeEntities" + ("?key=" + API_KEY)
+def create_endpoints():
+    functions_list = ["analyzeSentiment", "analyzeEntities", "analyzeEntitySentiment", "analyzeSyntax", "classifyText"]
+
+    functions_dict = {}
+
+    for i in range(0, len(functions_list)):
+        functions_dict.setdefault(functions_list[i], "https://language.googleapis.com/v1beta2/documents:" +  \
+                            functions_list[i] + ("?key=" + API_KEY))
+
+    return functions_dict
+
+
+ENDPOINTS = create_endpoints()
+
 
 TEST_DATA = {"document":
                 {"type":"PLAIN_TEXT",
@@ -22,10 +34,10 @@ TEST_DATA = {"document":
                  }
         }
 
-syntax_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
+syntax_request = requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=TEST_DATA)
 syntax_json = syntax_request.json()
 
-entities_request = requests.post(url = SYNTAX_ENDPOINT, json=TEST_DATA)
+entities_request = requests.post(url=ENDPOINTS.get('analyzeEntities'), json=TEST_DATA)
 entities_json = entities_request.json()
 
 
@@ -33,7 +45,6 @@ class RestHandler(webapp2.RequestHandler):
     def get(self):
 
         self.response.write(syntax_json)
-
 
 
 app = webapp2.WSGIApplication([
