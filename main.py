@@ -54,8 +54,6 @@ print_me = str(entities_json_data.text)
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-
-
         print(print_me)
 
 
