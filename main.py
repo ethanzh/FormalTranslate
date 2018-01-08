@@ -46,15 +46,15 @@ syntax_request = requests.post(url = SYNTAX_ENDPOINT, json=data)
 
 syntax_json_data = syntax_request.json()
 
-entities_json_data = requests.post(url = ENTITIES_ENDPOINT, json=data)
+entities_request = requests.post(url = ENTITIES_ENDPOINT, json=data)
 
-print_me = str(entities_json_data.text)
+test = syntax_request.text
 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        print(print_me)
+        print(self.response.write(test))
 
 
 
