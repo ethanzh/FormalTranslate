@@ -3,26 +3,22 @@ from security import KEY
 
 from apiclient.discovery import build
 
-service = build('language', 'v1', developerKey=KEY)
-collection = service.documents()
 
-data = {}
-data['document'] = {}
-data['document']['language'] = 'en'
-data['document']['content'] = "Google, headquartered in Mountain View, unveiled the new \
-                                Android phone at the Consumer Electronic Show. \
-                                Sundar Pichai said in his keynote that users love \
-                                their new Android phones."
-data['document']['type'] = 'PLAIN_TEXT'
-
-request = collection.analyzeSyntax(body=data)
-res = request.execute()
+def api_client_request(sentence):
+    data = sentence
+    service = build('language', 'v1', developerKey=KEY)
+    collection = service.documents()
+    request = collection.analyzeSyntax(body=data)
+    print("hello!!!!!")
+    res = request.execute()
+    print(res)
+    return res
 
 
 class ApiHandler(webapp2.RequestHandler):
     def get(self):
 
-        self.response.write(res)
+        self.response.write(api_client_request("test"))
 
 
 

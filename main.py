@@ -17,19 +17,68 @@
 
 
 import webapp2
-import numpy
-import sklearn
+import rest_requests
+import api_client_requests
 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        print('default')
+        self.response.write("""
+        
+        <html>
+        <head></head>
+        
+        <body>
+        
+        <h1> Enter your sentence </h1>
+        
+        
+        <form action="/submit" method="post">
+        Message: <input type="text" name="msg"><br>
+        Complexity (1-10): <input type="text" name="complexity"><br>
+        
+        <select name="api_type">
+          <option value="rest">REST</option>
+          <option value="client">Client API</option>
+        </select>    
+        
+        <input action type="submit" value="Submit">
+        
+        </form>
+        
+        </body>
+        
+        </html>
+        
+        """)
 
+
+class SubmitHandler(webapp2.RequestHandler):
+    def post(self):
+
+        request_type = self.request.POST.get("api_type")
+
+        print(self.request.POST.get("api_type"))
+
+        data = {'document': {}}
+        data['document']['language'] = 'en'
+        data['document']['content'] = self.request.POST.get("msg")
+        data['document']['type'] = 'PLAIN_TEXT'
+
+        if request_type == "rest":
+            server_response = rest_requests.syntax_request(data)
+            self.response.write(server_response.text)
+
+        elif request_type == "client":
+            server_response = api_client_requests.api_client_request(data)
+            self.response.write(server_response)
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+
+    ('/submit', SubmitHandler)
 ], debug=True)
 
 
