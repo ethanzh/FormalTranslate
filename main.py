@@ -59,8 +59,6 @@ class SubmitHandler(webapp2.RequestHandler):
 
         request_type = self.request.POST.get("api_type")
 
-        print(self.request.POST.get("api_type"))
-
         data = {'document': {}}
         data['document']['language'] = 'en'
         data['document']['content'] = self.request.POST.get("msg")
@@ -71,7 +69,7 @@ class SubmitHandler(webapp2.RequestHandler):
             self.response.write(server_response.text)
 
         elif request_type == "client":
-            server_response = api_client_requests.api_client_request(data)
+            server_response = api_client_requests.make_api_client_request(data)
             self.response.write(server_response)
 
 

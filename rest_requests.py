@@ -25,34 +25,6 @@ def create_endpoints():
 ENDPOINTS = create_endpoints()
 
 
-TEST_DATA = {"document":
-                {"type":"PLAIN_TEXT",
-                "content":
-                    "Google, headquartered in Mountain View, unveiled the new Android \
-                    phone at the Consumer Electronic Show. Sundar Pichai said in his  \
-                    keynote that users love their new Android phones."
-                 }
-        }
-
-
 def syntax_request(sentence):
 
     return requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=sentence)
-
-
-
-syntax_request_variable = requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=TEST_DATA)
-
-entities_request = requests.post(url=ENDPOINTS.get('analyzeEntities'), json=TEST_DATA)
-entities_json = entities_request.json()
-
-
-class RestHandler(webapp2.RequestHandler):
-    def get(self):
-
-        print(1) #self.response.write(syntax_json)
-
-
-app = webapp2.WSGIApplication([
-    ('/rest', RestHandler)
-], debug=True)
