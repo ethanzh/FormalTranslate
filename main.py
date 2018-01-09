@@ -19,6 +19,8 @@
 import webapp2
 import rest_requests
 import api_client_requests
+import json_parser
+import re
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -35,8 +37,13 @@ class MainHandler(webapp2.RequestHandler):
         
         
         <form action="/submit" method="post">
-        Message: <input type="text" name="msg"><br>
-        Complexity (1-10): <input type="text" name="complexity"><br>
+        Message: <textarea name="msg"></textarea>
+        
+        <select name="complexity">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>    
         
         <select name="api_type">
           <option value="rest">REST</option>
@@ -57,16 +64,40 @@ class MainHandler(webapp2.RequestHandler):
 class SubmitHandler(webapp2.RequestHandler):
     def post(self):
 
+        self.response.write("""
+        
+        <button onclick="goBack()">Go Back</button>
+
+        <script>
+        function goBack() {
+            window.history.back();
+            }
+        </script>
+        
+        
+        """)
+
         request_type = self.request.POST.get("api_type")
+        complexity = self.request.POST.get("complexity")
+        message = self.request.POST.get("msg")
 
         data = {'document': {}}
         data['document']['language'] = 'en'
-        data['document']['content'] = self.request.POST.get("msg")
+
+        stripped = re.sub(r'[^\w\s]', '', message)
+
+        data['document']['content'] = stripped
         data['document']['type'] = 'PLAIN_TEXT'
 
         if request_type == "rest":
             server_response = rest_requests.syntax_request(data)
-            self.response.write(server_response.text)
+
+            Word_list = json_parser.create_word_list(server_response)
+
+            raw_word_list = json_parser.create_raw_word_list(Word_list)
+
+            for i in range(0, len(Word_list)):
+                self.response.write(Word_list[i].tag + " ")
 
         elif request_type == "client":
             server_response = api_client_requests.make_api_client_request(data)

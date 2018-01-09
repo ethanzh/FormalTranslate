@@ -27,4 +27,4 @@ ENDPOINTS = create_endpoints()
 
 def syntax_request(sentence):
 
-    return requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=sentence)
+    return requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=sentence).json()
