@@ -64,19 +64,6 @@ class MainHandler(webapp2.RequestHandler):
 class SubmitHandler(webapp2.RequestHandler):
     def post(self):
 
-        self.response.write("""
-        
-        <button onclick="goBack()">Go Back</button>
-
-        <script>
-        function goBack() {
-            window.history.back();
-            }
-        </script>
-        
-        
-        """)
-
         request_type = self.request.POST.get("api_type")
         complexity = self.request.POST.get("complexity")
         message = self.request.POST.get("msg")
@@ -102,6 +89,19 @@ class SubmitHandler(webapp2.RequestHandler):
         elif request_type == "client":
             server_response = api_client_requests.make_api_client_request(data)
             self.response.write(server_response)
+
+        self.response.write("""
+
+        <button onclick="goBack()">Go Back</button>
+
+        <script>
+        function goBack() {
+            window.history.back();
+            }
+        </script>
+
+
+        """)
 
 
 app = webapp2.WSGIApplication([
