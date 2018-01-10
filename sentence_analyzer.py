@@ -1,9 +1,12 @@
 from thesaurus import ThesaurusWord
 from textstat.textstat import textstat
-
+import time
 
 
 def create_index_list(object_list):
+
+    
+
     index_list = []
     parsed_object_list = []
 
@@ -13,17 +16,31 @@ def create_index_list(object_list):
             index_list.append(i)
             parsed_object_list.append(object_list[i])
 
+    
+
+    print("Create index list " + str())
+
     return index_list
 
 
 def word_replacer(index_list, original_list):
 
-        for i in range(0, len(index_list)):
+    
 
-            current_word = original_list[index_list[i]].content
+    for i in range(0, len(index_list)):
 
+        current_word = original_list[index_list[i]].content
+
+        try:
             synonym = ThesaurusWord(current_word).synonyms(complexity=2)[0]
 
-            original_list[index_list[i]].content = synonym
+        except IndexError:
+            synonym = current_word
 
-        return original_list
+        original_list[index_list[i]].content = synonym
+
+    
+
+    print("Word replacer " + str())
+
+    return original_list

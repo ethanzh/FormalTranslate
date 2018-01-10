@@ -23,6 +23,8 @@ import sentence_analyzer
 import json_parser
 import re
 from textstat.textstat import textstat
+import timeit
+import time
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -84,7 +86,11 @@ class SubmitHandler(webapp2.RequestHandler):
         data['document']['content'] = stripped
         data['document']['type'] = 'PLAIN_TEXT'
 
+
         if request_type == "rest":
+
+            start = time.time()
+
             server_response = rest_requests.syntax_request(data)
 
             first_raw_list = []
@@ -110,6 +116,11 @@ class SubmitHandler(webapp2.RequestHandler):
             singlestring = " ".join(new_raw_list)
             print(textstat.flesch_reading_ease(singlestring))
             self.response.write("<p>Final: </p>" + singlestring)
+
+            end = time.time()
+
+            print("REST if block " + str(end-start))
+
 
         elif request_type == "client":
             server_response = api_client_requests.make_api_client_request(data)

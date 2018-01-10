@@ -1,3 +1,5 @@
+import time
+
 class Word:
 
     def __init__(self, content, person, number, tense, tag):
@@ -9,6 +11,8 @@ class Word:
 
 
 def create_word_list(json):
+
+    start_time = time.time()
 
     word_list = []
 
@@ -26,14 +30,25 @@ def create_word_list(json):
             json['tokens'][i]['partOfSpeech']['tag']
 
         ))
+
+    end_time = time.time()
+
+    print("Create word list " + str(end_time-start_time))
+
     return word_list
 
 
 def create_raw_word_list(wordObjList):
 
+    start = time.time()
+
     raw_words = []
 
     for i in range(0, len(wordObjList)):
         raw_words.append(wordObjList[i].content)
+
+    end = time.time()
+
+    print("Create raw word list " + str(end-start))
 
     return raw_words
