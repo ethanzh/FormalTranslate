@@ -24,7 +24,7 @@ import json_parser
 import re
 from textstat.textstat import textstat
 import time
-from google.cloud import bigquery
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -66,6 +66,9 @@ class MainHandler(webapp2.RequestHandler):
 
 class SubmitHandler(webapp2.RequestHandler):
     def post(self):
+
+
+
 
         self.response.write("""
         
