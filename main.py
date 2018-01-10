@@ -19,6 +19,7 @@
 import webapp2
 import rest_requests
 import api_client_requests
+import sentence_analyzer
 import json_parser
 import re
 
@@ -81,10 +82,12 @@ class SubmitHandler(webapp2.RequestHandler):
 
             Word_list = json_parser.create_word_list(server_response)
 
-            raw_word_list = json_parser.create_raw_word_list(Word_list)
+            index_list = sentence_analyzer.create_index_list(Word_list)
 
-            for i in range(0, len(Word_list)):
-                self.response.write(Word_list[i].tag + " ")
+            new_word_list = sentence_analyzer.word_replacer(index_list, Word_list)
+
+            for i in range(0, len(new_word_list)):
+                self.response.write(new_word_list[i].content + " ")
 
         elif request_type == "client":
             server_response = api_client_requests.make_api_client_request(data)
