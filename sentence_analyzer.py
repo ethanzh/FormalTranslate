@@ -1,4 +1,7 @@
 from thesaurus import ThesaurusWord
+from textstat.textstat import textstat
+
+
 
 def create_index_list(object_list):
     index_list = []
@@ -15,15 +18,11 @@ def create_index_list(object_list):
 
 def word_replacer(index_list, original_list):
 
-        print("INITIAL INDEX LIST LENGTH" + str(len(index_list)))
-
         for i in range(0, len(index_list)):
-
-            print("CURRENT INDEX" + str(i))
 
             current_word = original_list[index_list[i]].content
 
-            synonym = ThesaurusWord(current_word).synonyms(complexity=3)[0]
+            synonym = ThesaurusWord(current_word).synonyms(complexity=2)[0]
 
             original_list[index_list[i]].content = synonym
 
