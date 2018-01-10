@@ -40,15 +40,9 @@ def create_word_list(json):
 
 def create_raw_word_list(wordObjList):
 
-    start = time.time()
-
     raw_words = []
 
     for i in range(0, len(wordObjList)):
         raw_words.append(wordObjList[i].content)
-
-    end = time.time()
-
-    print("Create raw word list " + str(end-start))
 
     return raw_words

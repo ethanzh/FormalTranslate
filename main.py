@@ -23,9 +23,8 @@ import sentence_analyzer
 import json_parser
 import re
 from textstat.textstat import textstat
-import timeit
 import time
-
+from google.cloud import bigquery
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):

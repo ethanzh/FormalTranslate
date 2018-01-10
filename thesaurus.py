@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 
 """
 I will do my best to come back and add better comments/docstrings to this file
