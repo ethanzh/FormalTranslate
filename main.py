@@ -25,6 +25,12 @@ import re
 from textstat.textstat import textstat
 import time
 from google.cloud import bigquery
+import csv
+
+
+
+
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
