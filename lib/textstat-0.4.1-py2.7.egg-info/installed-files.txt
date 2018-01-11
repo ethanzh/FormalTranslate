@@ -1,0 +1,10 @@
+..\textstat\textstat.py
+..\textstat\__init__.py
+..\textstat\easy_words.txt
+..\textstat\textstat.pyc
+..\textstat\__init__.pyc
+dependency_links.txt
+PKG-INFO
+requires.txt
+SOURCES.txt
+top_level.txt
