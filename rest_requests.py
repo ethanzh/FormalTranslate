@@ -16,8 +16,8 @@ def create_endpoints():
     functions_dict = {}
 
     for i in range(0, len(functions_list)):
-        functions_dict.setdefault(functions_list[i], "https://language.googleapis.com/v1beta2/documents:" +  \
-                            functions_list[i] + ("?key=" + API_KEY))
+        functions_dict.setdefault(functions_list[i], "https://language.googleapis.com/v1beta2/documents:" + \
+                                  functions_list[i] + ("?key=" + API_KEY))
 
     return functions_dict
 
@@ -26,5 +26,4 @@ ENDPOINTS = create_endpoints()
 
 
 def syntax_request(sentence):
-
     return requests.post(url=ENDPOINTS.get('analyzeSyntax'), json=sentence).json()

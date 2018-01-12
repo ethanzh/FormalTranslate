@@ -1,18 +1,15 @@
-from thesaurus import ThesaurusWord
-from textstat.textstat import textstat
-import time
 from PyDictionary import PyDictionary
 import csv
 
 
-def create_index():
+def create_index():  # Creates a Python list from a CSV thesaurus file
     with open('data_files/final_short.csv', 'r') as f:
         reader = csv.reader(f)
 
         return list(reader)
 
 
-def create_index_list(object_list):
+def create_index_list(object_list):  # Creates a list of indexes of words to be replaced, based on their tag
 
     index_list = []
     parsed_object_list = []
@@ -28,44 +25,34 @@ def create_index_list(object_list):
     return index_list
 
 
-def word_search(word, big):
+def word_search(word, big):  # Searches the CSV to see if there is a match. Returns first synonym
     for i in range(0, len(big)):
-        if str(word) == str(big[i][0]):
 
-            if str(big[i][3]) is not None:
-                return str(big[i][3]).partition(' ')[0]
-            else:
-                break
+        if (str(word) == str(big[i][0])) & (str(big[i][3]) is not None):
+
+            return str(big[i][3]).partition(' ')[0]
+
     return word
 
 
 def word_replacer(index_list, original_list):
 
-    BIG_LIST = create_index()
+    parsed_list = original_list
 
-
-    dictionary = PyDictionary()
+    thesaurus_csv = create_index()
 
     for i in range(0, len(index_list)):
 
-        current_word = original_list[index_list[i]].content
-
-        print(current_word)
+        current_word = parsed_list[index_list[i]].content
 
         try:
-            #synonym = ThesaurusWord(current_word).synonyms(complexity=2)
-            #synonym = dictionary.synonym(current_word)[0]
+            # synonym = ThesaurusWord(current_word).synonyms(complexity=2)
 
-            synonym = word_search(current_word, BIG_LIST)
+            synonym = word_search(current_word, thesaurus_csv)
 
         except IndexError:
-            synonym = current_word
+            synonym = current_word  # When using ThesaurusWord, if complexity isn't there, return original word
 
-        print(synonym)
-        original_list[index_list[i]].content = synonym
+        parsed_list[index_list[i]].content = synonym
 
-    
-
-    print("Word replacer " + str())
-
-    return original_list
+    return parsed_list
