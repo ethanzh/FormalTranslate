@@ -1,35 +1,8 @@
-#!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-
 import webapp2
 import rest_requests
-import api_client_requests
 import sentence_analyzer
 import json_parser
 import re
-from textstat.textstat import textstat
-import time
-from google.cloud import bigquery
-import csv
-
-
-
-
 
 
 class MainHandler(webapp2.RequestHandler):
@@ -37,35 +10,12 @@ class MainHandler(webapp2.RequestHandler):
 
         self.response.write("""
         
-        <html>
-        <head></head>
-        
-        <body>
-        
-        <h1> Enter your sentence </h1>
-        
-        
         <form action="/submit" method="post">
+        
         Message: <textarea rows="8" cols="80" name="msg"></textarea>
-        
-        <select name="complexity">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>    
-        
-        <select name="api_type">
-          <option value="rest">REST</option>
-          <option value="client">Client API</option>
-        </select>    
-        
         <input action type="submit" value="Submit">
         
         </form>
-        
-        </body>
-        
-        </html>
         
         """)
 
@@ -73,83 +23,49 @@ class MainHandler(webapp2.RequestHandler):
 class SubmitHandler(webapp2.RequestHandler):
     def post(self):
 
-        self.response.write("""
-        
-        <p> 100 = Least complex, 0 = Most complex </p>
-        
-        """)
-
-        request_type = self.request.POST.get("api_type")
-        complexity = self.request.POST.get("complexity")
-        message = self.request.POST.get("msg")
+        message = self.request.POST.get("msg")  # Get text from HTML element
 
         data = {'document': {}}
-        data['document']['language'] = 'en'
+        data['document']['language'] = 'en'  # Starting to create the JSON object
 
-        stripped = re.sub(r'[^\w\s]', '', message)
+        stripped = re.sub(r'[^\w\s]', '', message)  # Takes all the punctuation out. Come back to this later
 
         data['document']['content'] = stripped
-        data['document']['type'] = 'PLAIN_TEXT'
+        data['document']['type'] = 'PLAIN_TEXT'  # Finishes creating JSON object to be sent to REST API
 
+        server_response = rest_requests.syntax_request(data)  # JSON object returned from REST API call
 
-        if request_type == "rest":
+        original_text_list = []
+        changed_text_list = []
 
-            start = time.time()
+        original_object_list = json_parser.create_word_list(server_response)  # List of word objects
 
-            server_response = rest_requests.syntax_request(data)
+        for i in range(0, len(original_object_list)):
+            original_text_list.append(original_object_list[i].content)  # Makes a plain list of words
 
-            first_raw_list = []
-            Word_list = json_parser.create_word_list(server_response)
+        original_string = " ".join(original_text_list)  # Makes one string of all the original words
 
-            for i in range(0, len(Word_list)):
-                first_raw_list.append(Word_list[i].content)
+        index_list = sentence_analyzer.create_index_list(original_object_list)  # Index of words to change
 
-            hi = " ".join(first_raw_list)
-            print(textstat.flesch_reading_ease(hi))
+        changed_object_list = sentence_analyzer.word_replacer(index_list, original_object_list)
 
-            self.response.write("<p>Initial: </p>" + hi)
+        for i in range(0, len(changed_object_list)):
+            changed_text_list.append(changed_object_list[i].content)  # Makes plain list of changed words
 
-            index_list = sentence_analyzer.create_index_list(Word_list)
+        changed_string = " ".join(changed_text_list)  # String made from the new words
 
-            new_word_list = sentence_analyzer.word_replacer(index_list, Word_list)
-
-            new_raw_list = []
-
-            for i in range(0, len(new_word_list)):
-                new_raw_list.append(new_word_list[i].content)
-
-            singlestring = " ".join(new_raw_list)
-            print(textstat.flesch_reading_ease(singlestring))
-            self.response.write("<p>Final: </p>" + singlestring)
-
-            end = time.time()
-
-            print("REST if block " + str(end-start))
-
-
-        elif request_type == "client":
-            server_response = api_client_requests.make_api_client_request(data)
-            self.response.write(server_response)
-
-        self.response.write(
-
-            "<p>Initial score: </p>" + str(textstat.flesch_reading_ease(hi)) +
-            "<p>Final score: </p>" + str(textstat.flesch_reading_ease(singlestring))
-
-        )
-
+        self.response.write("<p>Initial: </p>" + original_string)
+        self.response.write("<p>Final: </p>" + changed_string)
 
         self.response.write("""
-
+        
         <button onclick="goBack()">Go Back</button>
-
-        <script>
-        function goBack() {
-            window.history.back();
-            }
-        </script>
-
-
+            <script>
+                function goBack() {
+                    window.history.back();
+                    }
+            </script>
+            
         """)
 
 

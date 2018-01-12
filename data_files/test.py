@@ -8,7 +8,7 @@ with open('try.txt', 'r') as f:
         lines.append(l)
 
 
-output = open('new.csv', 'w', newline="\n", encoding="utf-8")
+output = open('test_short.csv', 'w', newline="\n", encoding="utf-8")
 writer = csv.writer(output)
 
 
@@ -17,7 +17,7 @@ already_visited = []
 toy = []
 
 
-with open ('thesaurus.csv', 'rt') as f:
+with open ('FULL_THESAURUS.csv', 'rt') as f:
     reader = csv.reader(f)
     field_names_list = next(reader)
     writer.writerow(field_names_list)
@@ -27,11 +27,10 @@ with open ('thesaurus.csv', 'rt') as f:
           #    print("Is in file")
           #if row[0] not in lines:
           #    print("not here")
-          if row[0] not in already_visited:
-              if row[0] in lines:
-                  writer.writerow(row)
-                  toy.append(row)
-                  already_visited.append(row[0])
+		if (row[0] not in already_visited) & (row[0] in lines):
+			writer.writerow(row)
+			toy.append(row)
+			already_visited.append(row[0])
 
 
 text_file = open("Output.txt", "w")

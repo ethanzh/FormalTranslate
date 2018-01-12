@@ -6,7 +6,7 @@ import csv
 
 
 def create_index():
-    with open('final_short.csv', 'r') as f:
+    with open('data_files/final_short.csv', 'r') as f:
         reader = csv.reader(f)
 
         return list(reader)
