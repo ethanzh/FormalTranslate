@@ -46,7 +46,7 @@ def word_replacer(index_list, original_list):
         current_word = parsed_list[index_list[i]].content
 
         try:
-            # synonym = ThesaurusWord(current_word).synonyms(complexity=2)
+            # synonym = ThesaurusWord(current_word).synonyms(complexity=2)  # Uses Thesaurus API instead of my list
 
             synonym = word_search(current_word, thesaurus_csv)
 
