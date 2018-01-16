@@ -20,6 +20,7 @@ def btw(inputString, lh, rh):
     # extract a string between two other strings.
     return inputString.split(lh, 1)[1].split(rh, 1)[0]
 
+
 def getFilter(keyName, filters):
     return filters['filters'][keyName] if keyName in filters['filters'] else None
 
