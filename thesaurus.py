@@ -11,6 +11,7 @@ documentation. If I'm being really lazy about it though, just make an issue or
 email me and tell me I'm a bitch.
 """
 
+
 def formatWordUrl(inputWord):
     url = 'http://www.thesaurus.com/browse/'
     url = url + inputWord.strip().lower().replace(' ', '%20')
