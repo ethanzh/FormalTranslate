@@ -16,6 +16,7 @@ def formatWordUrl(inputWord):
     url = url + inputWord.strip().lower().replace(' ', '%20')
     return url
 
+
 def btw(inputString, lh, rh):
     # extract a string between two other strings.
     return inputString.split(lh, 1)[1].split(rh, 1)[0]
