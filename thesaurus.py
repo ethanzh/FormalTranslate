@@ -23,6 +23,7 @@ def btw(inputString, lh, rh):
 def getFilter(keyName, filters):
     return filters['filters'][keyName] if keyName in filters['filters'] else None
 
+
 def fetchWordData(inputWord):
     url = formatWordUrl(inputWord)
     r = requests.get(url)
