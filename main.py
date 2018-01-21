@@ -61,9 +61,7 @@ class SubmitHandler(webapp2.RequestHandler):
     def post(self):
 
         message = self.request.POST.get("msg")  # Get text from HTML element
-
         data = create_json_object(message)  # Creates JSON object called data
-
         server_response = rest_requests.syntax_request(data)  # JSON object returned from REST API call
 
         parsed_server_response = handle_server_response(server_response)  # [original_string, changed_string]
@@ -72,7 +70,6 @@ class SubmitHandler(webapp2.RequestHandler):
 
         self.response.write("<p>Initial: </p>" + original_string)
         self.response.write("<p>Final: </p>" + changed_string)
-
         self.response.write("""
         
         <button onclick="goBack()">Go Back</button>
