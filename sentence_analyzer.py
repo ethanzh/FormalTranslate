@@ -21,7 +21,6 @@ def create_index_list(object_list):  # Creates a list of indexes of words to be 
             parsed_object_list.append(object_list[i])
 
     print("Create index list " + str())
-
     return index_list
 
 
