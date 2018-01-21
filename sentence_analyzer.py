@@ -37,7 +37,6 @@ def word_search(word, big):  # Searches the CSV to see if there is a match. Retu
 def word_replacer(index_list, original_list):
 
     parsed_list = original_list
-
     thesaurus_csv = create_index()
 
     for i in range(0, len(index_list)):
@@ -46,7 +45,6 @@ def word_replacer(index_list, original_list):
 
         try:
             # synonym = ThesaurusWord(current_word).synonyms(complexity=2)  # Uses Thesaurus API instead of my list
-
             synonym = word_search(current_word, thesaurus_csv)
 
         except IndexError:
