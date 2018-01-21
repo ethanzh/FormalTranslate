@@ -5,7 +5,6 @@ import csv
 def create_index():  # Creates a Python list from a CSV thesaurus file
     with open('data_files/final_short.csv', 'r') as f:
         reader = csv.reader(f)
-
         return list(reader)
 
 
